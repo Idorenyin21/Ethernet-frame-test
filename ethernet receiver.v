@@ -3,7 +3,8 @@ module slave_receiver (
     input wire rst,               // Reset signal (active high)
     input wire [7:0] frame_in,    // Incoming Ethernet frame data
     input wire valid,             // Frame validity signal
-    output reg [7:0] payload_out [1499:0], // Extracted payload data
+//    output reg [7:0] payload_out [1499:0], // Extracted payload data
+   output reg [11999:0] payload_out , // Extracted payload data
     output reg error_flag         // Error flag for CRC check
 );
 
@@ -60,4 +61,3 @@ module slave_receiver (
         .crc_out(crc_calc)
     );
 endmodule
-
