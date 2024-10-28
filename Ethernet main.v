@@ -6,7 +6,8 @@ module master_transmitter (
     input wire [47:0] destination_mac,        // 48-bit destination MAC address (6 bytes)
     input wire [47:0] source_mac,             // 48-bit source MAC address (6 bytes)
     input wire [15:0] ethertype,              // 16-bit EtherType/Length field
-    input wire [7:0] payload [0:1499],        // Payload data to transmit (up to 1500 bytes)
+//    input wire [7:0] payload [0:1499],        // Payload data to transmit (up to 1500 bytes)
+     input reg [11999:0] payload ,             // Payload data to transmit (up to 1500 bytes)
     input wire [15:0] payload_length,         // Length of the payload (in bytes)
     output reg [7:0] frame_out,               // Byte-by-byte Ethernet frame output
     output reg valid                          // Valid signal indicating valid frame data
@@ -125,4 +126,3 @@ module master_transmitter (
             crc_calc <= crc_calc ^ frame_out; // Simple XOR-based CRC logic (for demonstration)
     end
 endmodule
-
