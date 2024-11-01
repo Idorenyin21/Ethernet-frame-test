@@ -1,3 +1,4 @@
+
 `timescale 1ns / 1ps
 
 module tb_master_slave_ethernet;
@@ -8,10 +9,10 @@ module tb_master_slave_ethernet;
 
     // Signals for the master transmitter
     reg start_tx;
-    reg [7:0] destination_mac [5:0];    // Destination MAC address (6 bytes)
-    reg [7:0] source_mac [5:0];         // Source MAC address (6 bytes)
+    reg [47:0] destination_mac ;    // Destination MAC address (6 bytes)
+    reg [47:0] source_mac ;         // Source MAC address (6 bytes)
     reg [15:0] ethertype;               // EtherType/Length field
-    reg [7:0] payload [1499:0];         // Payload (1500 bytes max)
+    reg [11999:0] payload ;         // Payload (1500 bytes max)
     reg [15:0] payload_length;          // Length of the payload
     wire [7:0] frame_out;               // Frame output from master transmitter
     wire valid;                         // Valid signal for frame output
@@ -19,7 +20,7 @@ module tb_master_slave_ethernet;
     // Signals for the slave receiver
     reg [7:0] frame_in;                 // Frame input to slave receiver
     reg valid_in;                       // Valid signal for frame input
-    wire [7:0] payload_out [1499:0];    // Extracted payload from slave receiver
+    wire [11999:0] payload_out ;    // Extracted payload from slave receiver
     wire error_flag;                    // Error flag for CRC check
 
     // Instantiate the master transmitter
@@ -50,6 +51,7 @@ module tb_master_slave_ethernet;
     always #5 clk = ~clk;
 
     // Testbench initialization
+    integer i;
     initial begin
         // Initialize clock and reset
         clk = 0;
@@ -86,7 +88,8 @@ module tb_master_slave_ethernet;
         #100;
 
         // Send the generated frame to the slave receiver
-        for (integer i = 0; i < (12 + 2 + payload_length); i = i + 1) begin
+        
+        for ( i = 0; i < (12 + 2 + payload_length); i = i + 1) begin
             frame_in = frame_out;  // Transmit frame data byte-by-byte
             valid_in = valid;      // Set valid signal
             #10;                   // Wait 10ns for each byte
@@ -102,4 +105,3 @@ module tb_master_slave_ethernet;
         #50 $stop;
     end
 endmodule
-
